@@ -4,34 +4,27 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 
-df = pd.read_csv('traindata1.csv')
+df = pd.read_csv('cleanedtrain.csv')
 
 cols_to_normalize = [
     'Days_since_launch',
     'Total_Stock_Sold_Percentage',
     'Alltime_Perday_Quantity',
     'Alltime_Perday_View',
-    'Alltime_Perday_ATC'
+    'Alltime_Perday_ATC',
+    'Days_Since_Last_Sale'
 ]
 
 scaler = MinMaxScaler()
 df_norm = pd.DataFrame(scaler.fit_transform(df[cols_to_normalize]), columns=cols_to_normalize)
 df_norm['Days_since_launch'] = 1 - df_norm['Days_since_launch']
 
-score = (
-    0.10 * df_norm['Days_since_launch'] +
-    0.30 * df_norm['Total_Stock_Sold_Percentage'] +
-    0.25 * df_norm['Alltime_Perday_Quantity'] +
-    0.15 * df_norm['Alltime_Perday_View'] +
-    0.20 * df_norm['Alltime_Perday_ATC']
-)
-
-df['Score'] = pd.qcut(score, 5, labels=[1,2,3,4,5]).astype(int)
-df['Score'] = 6 - df['Score']
+# Copy Score to normalized df
+df_norm['Score'] = df['Score']
 
 features = cols_to_normalize
-X = df[features]
-y = df['Score']
+X = df_norm[features]
+y = df_norm['Score']
 
 best_rf = RandomForestClassifier(
     n_estimators=300,
@@ -43,5 +36,6 @@ best_rf = RandomForestClassifier(
 )
 best_rf.fit(X, y)
 
-# Save model to training folder
 joblib.dump(best_rf, 'rf_selling_score_best.joblib')
+joblib.dump(scaler, 'scaler.joblib')
+
