@@ -1,6 +1,10 @@
-import streamlit as st
+
 import pandas as pd
 import joblib
+import os
+import streamlit as st
+st.write("CWD:", os.getcwd())
+st.write("Files in CWD:", os.listdir())
 
 model = joblib.load('rf_selling_score_best.joblib')
 scaler = joblib.load('scaler.joblib')  # <--- Load the scaler
