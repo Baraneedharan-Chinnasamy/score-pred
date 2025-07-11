@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-model = joblib.load('app/rf_selling_score_best.joblib')
-scaler = joblib.load('app/scaler.joblib')  # <--- Load the scaler
+model = joblib.load('rf_selling_score_best.joblib')
+scaler = joblib.load('scaler.joblib')  # <--- Load the scaler
 
 st.title("Product Selling Score Predictor")
 st.write("Enter product details to predict selling score (1 = Best, 5 = Worst)")
