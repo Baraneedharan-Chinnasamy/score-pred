@@ -4,7 +4,8 @@ import joblib
 
 
 
-model = joblib.load('rf_selling_score_best.joblib')
+model = joblib.load('app/rf_selling_score_best.joblib')
+
 
 st.title("Product Selling Score Predictor")
 st.write("Enter product details to predict selling score (1 = Best, 5 = Worst)")
